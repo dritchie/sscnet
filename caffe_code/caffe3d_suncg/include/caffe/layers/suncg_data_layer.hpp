@@ -58,7 +58,8 @@ class SuncgDataLayer : public BasePrefetchingDataLayer<Dtype> {
   // Camera information
   int frame_width = 640; // in pixels
   int frame_height = 480;
-  Dtype cam_K[9] = {518.8579f, 0.0f, (float)frame_width / 2.0f, 0.0f, 518.8579f, (float)frame_height / 2.0f, 0.0f, 0.0f, 1.0f};
+  // Dtype cam_K[9] = {518.8579f, 0.0f, (float)frame_width / 2.0f, 0.0f, 518.8579f, (float)frame_height / 2.0f, 0.0f, 0.0f, 1.0f};
+  Dtype cam_K[9] = {554.256f, 0.0f, 319.5f, 0.0f, 554.256f, 239.5f, 0.0f, 0.0f, 1.0f};
   Dtype cam_info[27];
 
   // Volume parameters
