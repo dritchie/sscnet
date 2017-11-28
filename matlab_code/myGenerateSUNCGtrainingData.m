@@ -1,6 +1,9 @@
 
 function myGenerateSUNCGtrainingData(sceneListFilename)
-	data_dirs;
+	suncg_data_dir = '/mnt/nfs_datasets/SUNCG/suncg_data';
+	input_dir = '/mnt/nfs_datasets/SUNCG/suncg_sdf-ceil_images_640x480';
+	output_dir = '/mnt/nfs_datasets/SUNCG/sscnet_training_data';
+
 	addpath('./utils'); 
 
 	% % So that we're allowed to use 8 parallel for loop threads
@@ -8,7 +11,7 @@ function myGenerateSUNCGtrainingData(sceneListFilename)
 	% myCluster.NumWorkers = 8;
 	% saveProfile(myCluster);
 
-	parpool(4);
+	pool = parpool(4);
 
 	sceneDirs = getFileLines(sceneListFilename);
 	numSceneDirs = numel(sceneDirs);
@@ -25,7 +28,7 @@ function myGenerateSUNCGtrainingData(sceneListFilename)
 		sceneId = sceneId{1};
 
 		% Filter out only the 'good' frames (i.e. ones that have floor and ceiling)
-		goodFrames = getGoodFrames(sceneName, sceneId);
+		goodFrames = getGoodFrames(suncg_data_dir, input_dir, sceneName, sceneId);
 
 		% Pick out N random frames from this scene to use as training data
 		nViewsPerScene = 13;	% This gets us close to the number of training views used by sscnet
@@ -87,8 +90,7 @@ function [floorId, roomId] = loadFloorAndRoomIDFile(filename)
 end
 
 
-function isGood = isGoodFrame(sceneName, sceneId, houseJsonObj, frameId)
-	data_dirs;
+function isGood = isGoodFrame(suncg_data_dir, input_dir, sceneName, sceneId, houseJsonObj, frameId)
 
 	% Load the floor and room id file for this frame
 	idsFilename = sprintf('%s/%s/%s_ids.txt', input_dir, sceneName, frameId);
@@ -109,8 +111,7 @@ end
 
 
 % Returns a cell array with IDs of the frames which pass the 'isGoodFrame' test
-function frameIds = getGoodFrames(sceneName, sceneId)
-	data_dirs;
+function frameIds = getGoodFrames(suncg_data_dir, input_dir, sceneName, sceneId)
 
 	frameIds = {};
 
@@ -128,7 +129,7 @@ function frameIds = getGoodFrames(sceneName, sceneId)
 		if strcmp(ext, '.png') == 1
 			numAllFrames = numAllFrames + 1;
 			frameId = name;
-			if isGoodFrame(sceneName, sceneId, houseJsonObj, frameId)
+			if isGoodFrame(suncg_data_dir, input_dir, sceneName, sceneId, houseJsonObj, frameId)
 				numFrames = numFrames + 1;
 				frameIds{numFrames} = frameId;
 			end
