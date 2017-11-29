@@ -32,6 +32,7 @@ function myGenerateSUNCGtrainingData(sceneListFilename)
 
 		% Pick out N random frames from this scene to use as training data
 		nViewsPerScene = 13;	% This gets us close to the number of training views used by sscnet
+		nViewsPerScene = min(nViewsPerScene, numel(goodFrames))
 		perm = randperm(numel(goodFrames));
 		frames = cell(nViewsPerScene);
 		for j=1:nViewsPerScene
@@ -98,12 +99,12 @@ function isGood = isGoodFrame(suncg_data_dir, input_dir, sceneName, sceneId, hou
 
 	roomStruct = houseJsonObj.levels{floorId+1}.nodes{roomId+1};
 
-	% Verify that this room has both a floor and a ceiling
+	% Verify that this room has floor, walls, and ceiling
 	floorFilename = [fullfile(suncg_data_dir,'room',sceneId,roomStruct.modelId) 'f.obj'];
 	ceilFilename = [fullfile(suncg_data_dir,'room',sceneId,roomStruct.modelId) 'c.obj'];
-
+	wallFilename = [fullfile(suncg_data_dir,'room',sceneId,roomStruct.modelId) 'w.obj'];
 	isGood = false;
-	if exist(floorFilename, 'file') == 2 && exist(ceilFilename, 'file') == 2
+	if exist(floorFilename, 'file') == 2 && exist(ceilFilename, 'file') == 2 && exist(wallFilename, 'file') == 2
 		isGood = true;
 	end
 
