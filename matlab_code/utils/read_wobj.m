@@ -329,7 +329,8 @@ while(iline<length(file_words))
                 for i=2:length(twords)
                     str=twords{i};
                     val=str2double(str);
-                    stringd=~isfinite(val);
+                    % stringd=~isfinite(val);
+                    stringd = ~isfinite(val) && strcmp(str, 'NaN') == 0 && strcmp(str, 'Inf') == 0;
                     if(stringd)
                         j=j+1; twords{j}=str;
                     else
