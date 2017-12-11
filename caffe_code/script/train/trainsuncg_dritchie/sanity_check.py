@@ -3,9 +3,13 @@ import subprocess
 
 training_data_dir = '/mnt/nfs_datasets/SUNCG/sscnet_training_data'
 
-checkpoints_to_run = range(200, 2000, 200)
+# checkpoints_to_run = range(200, 2000, 200)
+checkpoints_to_run = [29800]
 
 frames_to_run = [
+	# '0ac297c80cba3266c3999204e27d67ae__0___5_0000',
+	'02a934040972db8edd03f0c8f3cbf712__0___19_0000',
+	'2c146fe47252b29c4d6e2f2a18495b07__1___56_0000',
 	'338f951bfaecd2052ce32afd4b7309db__1___28_0000'
 ]
 
