@@ -15,3 +15,18 @@ results/*
 
 NYUCAD_3D
 *.zip
+
+
+
+still_empty.txt
+test/vis_*.ply
+._*
+.DS_Store
+test/inputs
+test/sscnet_training_data_good
+test/empty_bin_frames
+caffe_code/caffe3d_suncg/build_master
+caffe_code/caffe3d_suncg/build_master_release
+caffe_code/script/train/trainsuncg_dritchie/sanity_check
+caffe_code/script/train/trainsuncg_dritchie/vis_*.ply
+*.ply
