@@ -1,13 +1,14 @@
 function myGenerateSUNCGtrainingData(listFilename)
-	% generateRandomlyFromSceneList(listFilename);
-	generateSpecificFrames(listFilename);
+	generateRandomlyFromSceneList(listFilename);
+	% generateSpecificFrames(listFilename);
 end
 
 
 function generateRandomlyFromSceneList(sceneListFilename)
 	suncg_data_dir = '/mnt/nfs_datasets/SUNCG/suncg_data';
 	input_dir = '/mnt/nfs_datasets/SUNCG/suncg_sdf-ceil_images_640x480';
-	output_dir = '/mnt/nfs_datasets/SUNCG/sscnet_training_data';
+	% output_dir = '/mnt/nfs_datasets/SUNCG/sscnet_training_data';
+	output_dir = '/mnt/nfs_datasets/SUNCG/sscnet_training_data2';
 
 	addpath('./utils'); 
 
@@ -56,43 +57,43 @@ function generateRandomlyFromSceneList(sceneListFilename)
 	end 
 end
 
-function generateSpecificFrames(frameListFilename)
-	suncg_data_dir = '/mnt/nfs_datasets/SUNCG/suncg_data';
-	input_dir = '/mnt/nfs_datasets/SUNCG/suncg_sdf-ceil_images_640x480';
-	output_dir = '/mnt/nfs_datasets/SUNCG/sscnet_training_data';
-	% output_dir = './TEST';
+% function generateSpecificFrames(frameListFilename)
+% 	suncg_data_dir = '/mnt/nfs_datasets/SUNCG/suncg_data';
+% 	input_dir = '/mnt/nfs_datasets/SUNCG/suncg_sdf-ceil_images_640x480';
+% 	output_dir = '/mnt/nfs_datasets/SUNCG/sscnet_training_data';
+% 	% output_dir = './TEST';
 
-	addpath('./utils'); 
+% 	addpath('./utils'); 
 
-	% pool = parpool(4);
+% 	% pool = parpool(4);
 
-	frames = getFileLines(frameListFilename);
-	n_frames = numel(frames);
-	n_groups = ceil(n_frames / 4);
+% 	frames = getFileLines(frameListFilename);
+% 	n_frames = numel(frames);
+% 	n_groups = ceil(n_frames / 4);
 
-	n_groups_done = 0;
-	for i=1:n_groups
+% 	n_groups_done = 0;
+% 	for i=1:n_groups
 
-		n_groups_done = n_groups_done + 1;
-		disp(sprintf('Doing group %d / %d', n_groups_done, n_groups));
-		start_i = 4*(i-1)+1;
-		end_i = min(4*i, n_frames);
+% 		n_groups_done = n_groups_done + 1;
+% 		disp(sprintf('Doing group %d / %d', n_groups_done, n_groups));
+% 		start_i = 4*(i-1)+1;
+% 		end_i = min(4*i, n_frames);
 
-		% for j=start_i:end_i
-		parfor j=start_i:end_i
-			frameString = frames{j};
-			toks = strsplit(frameString, ',');
-			sceneName = toks{1};
-			frameID = toks{2};
+% 		% for j=start_i:end_i
+% 		parfor j=start_i:end_i
+% 			frameString = frames{j};
+% 			toks = strsplit(frameString, ',');
+% 			sceneName = toks{1};
+% 			frameID = toks{2};
 
-			% Strip the trailing __0__ off the scene name to get the SUNCG scene ID
-			sceneToks = strsplit(sceneName, '__');
-			sceneId = sceneToks{1};
+% 			% Strip the trailing __0__ off the scene name to get the SUNCG scene ID
+% 			sceneToks = strsplit(sceneName, '__');
+% 			sceneId = sceneToks{1};
 
-			generateOneFrame(suncg_data_dir, input_dir, output_dir, sceneName, sceneId, frameID);
-		end
-	end
-end
+% 			generateOneFrame(suncg_data_dir, input_dir, output_dir, sceneName, sceneId, frameID);
+% 		end
+% 	end
+% end
 
 
 function generateOneFrame(suncg_data_dir, input_dir, output_dir, sceneName, sceneId, frameID)
