@@ -136,9 +136,13 @@ function [floorId, roomId] = loadFloorAndRoomIDFile(filename)
 	floorId_line = fgetl(fid);
 	floorId = str2num(floorId_line);
 	roomId_line = fgetl(fid);
-	roomId_toks = strsplit(roomId_line, '_');
-	roomId_cell = roomId_toks(2);
-	roomId = str2num(roomId_cell{1});
+	if strcmp(roomId_line, 'invalid')
+		roomId = 'invalid';
+	else
+		roomId_toks = strsplit(roomId_line, '_');
+		roomId_cell = roomId_toks(2);
+		roomId = str2num(roomId_cell{1});
+	end
 	fclose(fid); 
 end
 
@@ -148,6 +152,12 @@ function isGood = isGoodFrame(suncg_data_dir, input_dir, sceneName, sceneId, hou
 	% Load the floor and room id file for this frame
 	idsFilename = sprintf('%s/%s/%s_ids.txt', input_dir, sceneName, frameId);
 	[floorId, roomId] = loadFloorAndRoomIDFile(idsFilename);
+
+	% If the frame is marked as having invalid room id, this is a bad frame
+	if strcmp(roomId, 'invalid')
+		isGood = false;
+		return;
+	end
 
 	roomStruct = houseJsonObj.levels{floorId+1}.nodes{roomId+1};
 
